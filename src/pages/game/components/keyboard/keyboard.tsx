@@ -13,10 +13,12 @@ const Keyboard: React.FC<Props> = ({ usedLetters, onClick }) => {
   const englishAlphabet = useMemo(getEnglishAlphabet, []);
 
   const isKeyDisabled = useCallback((letter: string): boolean =>
-    Boolean(usedLetters.find((lt) => lt.toLowerCase() === letter.toLowerCase())), [usedLetters]);
+    Boolean(usedLetters.find((lt) => lt.toLowerCase() === letter.toLowerCase())
+  ), [usedLetters]);
 
   const isEnglishLetter = useCallback((letter: string): boolean =>
-    Boolean(englishAlphabet.find((lt) => lt.toLowerCase() === letter.toLowerCase())), [englishAlphabet]);
+    Boolean(englishAlphabet.find((lt) => lt.toLowerCase() === letter.toLowerCase())
+  ), [englishAlphabet]);
 
   const handleKeyClick = useCallback((letter: string) => onClick(letter), [onClick]);
 
