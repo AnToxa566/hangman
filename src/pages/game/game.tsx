@@ -5,14 +5,15 @@ import {
   ResultModal,
   WordPattern,
 } from './components/components';
-import { Hint, Level } from '../../components/components';
-import { Word } from '../../common/interfaces/interfaces';
-import { MAX_MISTAKES } from '../../common/constants/constants';
 import {
   getEnglishAlphabet,
   getRandomWord,
   isLetterContained,
 } from './helpers/helpers';
+import { Hint, Level } from '../../components/components';
+import { Word } from '../../common/interfaces/interfaces';
+import { MAX_MISTAKES } from '../../common/constants/constants';
+import { levelService } from '../../services/services';
 
 import styles from './styles.module.scss';
 
@@ -75,6 +76,10 @@ const Game = () => {
     addEventListener('keydown', handleKeydown);
 
     if (isWordFilled() || isMistakeLimitExceeded()) {
+      if (isWordFilled()) {
+        levelService.incrementLevel();
+      }
+
       removeEventListener('keydown', handleKeydown);
     }
 
