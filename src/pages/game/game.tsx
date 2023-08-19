@@ -1,28 +1,38 @@
+import { useState, useEffect } from '../../hooks/hooks';
 import { Hangman, Keyboard, WordPattern } from './components/components';
 import { Hint, Level } from '../../components/components';
-import { useState } from '../../hooks/hooks';
+import { Word } from '../../common/interfaces/interfaces';
+import { getRandomWord } from './helpers/helpers';
 
 import styles from './styles.module.scss';
 
 const Game = () => {
-  const [mistakesNumber, setMistakesNumber] = useState<number>(0);
+  const [mistakesNumber] = useState<number>(0);
 
-  const [openLetters, setOpenLetters] = useState<string[]>(['p']);
+  const [openLetters] = useState<string[]>([]);
 
-  const [usedLetters, setUsedLetters] = useState<string[]>(['p', 't', 'o']);
+  const [usedLetters] = useState<string[]>([]);
 
-  return (
+  const [word, setWord] = useState<Word>();
+
+  useEffect(() => {
+    setWord(getRandomWord());
+  }, []);
+
+  return word ? (
     <div className={styles.container}>
       <Level />
 
       <Hangman className={styles.hangman} mistakesNum={mistakesNumber} />
 
-      <Hint text="Food" />
+      <Hint text={word.category} />
 
-      <WordPattern word="apple" openLetters={openLetters} />
+      <WordPattern phrase={word.title} openLetters={openLetters} />
 
       <Keyboard usedLetters={usedLetters} />
     </div>
+  ) : (
+    <>Loading...</> // TODO: Loading Component
   );
 };
 
