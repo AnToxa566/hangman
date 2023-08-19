@@ -2,14 +2,21 @@ import styles from './styles.module.scss';
 
 interface Props {
   letter: string;
+  onClick: (letter: string) => void;
   disable?: boolean;
 }
 
-const Key: React.FC<Props> = ({ letter, disable = false }) => {
+const Key: React.FC<Props> = ({ letter, onClick, disable = false }) => {
+  const handleClick = () => onClick(letter);
+
   return (
-    <div className={`${styles.key} ${disable ? styles.disable : ''}`}>
+    <button 
+      className={`${styles.key} ${disable ? styles.disable : ''}`} 
+      onClick={handleClick}
+      disabled={disable} 
+    >
       {letter}
-    </div>
+    </button>
   );
 };
 
