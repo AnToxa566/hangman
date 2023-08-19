@@ -1,16 +1,13 @@
-import { useState, useEffect, useCallback } from '../../hooks/hooks';
+import { useState, useCallback } from '../../hooks/hooks';
 import {
   Hangman,
   Keyboard,
-  WinModal,
+  ResultModal,
   WordPattern,
 } from './components/components';
 import { Hint, Level } from '../../components/components';
 import { Word } from '../../common/interfaces/interfaces';
-import {
-  COINS_FOR_VICTORY,
-  MAX_MISTAKES,
-} from '../../common/constants/constants';
+import { MAX_MISTAKES } from '../../common/constants/constants';
 import { getRandomWord, isLetterUsed } from './helpers/helpers';
 
 import styles from './styles.module.scss';
@@ -40,6 +37,11 @@ const Game = () => {
     return true;
   }, [usedLetters, word.title]);
 
+  const isMistakeLimitExceeded = useCallback(
+    (): boolean => mistakesNumber >= MAX_MISTAKES,
+    [mistakesNumber]
+  );
+
   const handleKeyboardClick = (letter: string) => {
     if (isWrongLetter(letter)) {
       setMistakesNumber(mistakesNumber + 1);
@@ -47,12 +49,6 @@ const Game = () => {
 
     setUsedLetters([...usedLetters, letter]);
   };
-
-  useEffect(() => {
-    if (mistakesNumber === MAX_MISTAKES) {
-      console.log('Game Over!');
-    }
-  }, [mistakesNumber]);
 
   return (
     <div className={styles.container}>
@@ -66,8 +62,10 @@ const Game = () => {
 
       <Keyboard usedLetters={usedLetters} onClick={handleKeyboardClick} />
 
-      {isWordFilled() && (
-        <WinModal word={word.title} coins={COINS_FOR_VICTORY} />
+      {isWordFilled() && <ResultModal word={word.title} />}
+
+      {isMistakeLimitExceeded() && (
+        <ResultModal word={word.title} isWon={false} />
       )}
     </div>
   );
