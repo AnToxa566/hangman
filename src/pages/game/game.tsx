@@ -3,7 +3,7 @@ import { Hangman, Keyboard, WordPattern } from './components/components';
 import { Hint, Level } from '../../components/components';
 import { Word } from '../../common/interfaces/interfaces';
 import { MAX_MISTAKES } from '../../common/constants/constants';
-import { getRandomWord } from './helpers/helpers';
+import { getRandomWord, isLetterUsed } from './helpers/helpers';
 
 import styles from './styles.module.scss';
 
@@ -18,21 +18,17 @@ const Game = () => {
     word.title.toLowerCase().search(letter.toLowerCase()) === -1,
   [word.title]);
 
-  const isLetterUsed = useCallback((letter: string): boolean =>
-    Boolean(usedLetters.find((lt) => lt.toLowerCase() === letter.toLowerCase())
-  ), [usedLetters]);
-
   const isWordFilled = useCallback((): boolean => {
     const letters = word.title.split('');
 
     for (let i = 0; i < letters.length; i++) {
-      if (letters[i] !== ' ' && !isLetterUsed(letters[i])) {
+      if (letters[i] !== ' ' && !isLetterUsed(usedLetters, letters[i])) {
         return false;
       }
     }
     
     return true;
-  }, [isLetterUsed, word.title]);
+  }, [usedLetters, word.title]);
 
   const handleKeyboardClick = (letter: string) => {
     if (isWrongLetter(letter)) {

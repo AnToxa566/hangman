@@ -1,5 +1,6 @@
 import { useMemo, useEffect, useCallback } from '../../../../hooks/hooks';
 import { Key } from './components/components';
+import { isLetterUsed } from '../../helpers/helpers';
 import { getEnglishAlphabet } from './helpers/helpers';
 
 import styles from './styles.module.scss';
@@ -12,10 +13,6 @@ interface Props {
 const Keyboard: React.FC<Props> = ({ usedLetters, onClick }) => {
   const englishAlphabet = useMemo(getEnglishAlphabet, []);
 
-  const isKeyDisabled = useCallback((letter: string): boolean =>
-    Boolean(usedLetters.find((lt) => lt.toLowerCase() === letter.toLowerCase())
-  ), [usedLetters]);
-
   const isEnglishLetter = useCallback((letter: string): boolean =>
     Boolean(englishAlphabet.find((lt) => lt.toLowerCase() === letter.toLowerCase())
   ), [englishAlphabet]);
@@ -23,10 +20,10 @@ const Keyboard: React.FC<Props> = ({ usedLetters, onClick }) => {
   const handleKeyClick = useCallback((letter: string) => onClick(letter), [onClick]);
 
   const handleKeydown = useCallback((event: KeyboardEvent): void => {
-    if (isEnglishLetter(event.key)) {
+    if (isEnglishLetter(event.key) && !isLetterUsed(usedLetters, event.key)) {
       onClick(event.key);
     }
-  }, [isEnglishLetter, onClick]);
+  }, [isEnglishLetter, onClick, usedLetters]);
 
   useEffect(() => {
     addEventListener('keydown', handleKeydown);
@@ -41,7 +38,7 @@ const Keyboard: React.FC<Props> = ({ usedLetters, onClick }) => {
           key={letter} 
           letter={letter}
           onClick={handleKeyClick}
-          disable={isKeyDisabled(letter)} 
+          disable={isLetterUsed(usedLetters, letter)} 
         />
       ))}
     </div>
