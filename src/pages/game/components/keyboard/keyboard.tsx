@@ -1,6 +1,6 @@
-import { useMemo, useEffect, useCallback } from '../../../../hooks/hooks';
+import { useMemo, useCallback } from '../../../../hooks/hooks';
 import { Key } from './components/components';
-import { getEnglishAlphabet } from './helpers/helpers';
+import { getEnglishAlphabet, isLetterContained } from '../../helpers/helpers';
 
 import styles from './styles.module.scss';
 
@@ -12,36 +12,19 @@ interface Props {
 const Keyboard: React.FC<Props> = ({ usedLetters, onClick }) => {
   const englishAlphabet = useMemo(getEnglishAlphabet, []);
 
-  const isKeyDisabled = useCallback((letter: string): boolean =>
-    Boolean(usedLetters.find((lt) => lt.toLowerCase() === letter.toLowerCase())
-  ), [usedLetters]);
-
-  const isEnglishLetter = useCallback((letter: string): boolean =>
-    Boolean(englishAlphabet.find((lt) => lt.toLowerCase() === letter.toLowerCase())
-  ), [englishAlphabet]);
-
-  const handleKeyClick = useCallback((letter: string) => onClick(letter), [onClick]);
-
-  const handleKeydown = useCallback((event: KeyboardEvent): void => {
-    if (isEnglishLetter(event.key)) {
-      onClick(event.key);
-    }
-  }, [isEnglishLetter, onClick]);
-
-  useEffect(() => {
-    addEventListener('keydown', handleKeydown);
-
-    return () => removeEventListener('keydown', handleKeydown);
-  }, [handleKeydown])
+  const handleKeyClick = useCallback(
+    (letter: string) => onClick(letter),
+    [onClick]
+  );
 
   return (
     <div className={styles.keyboard}>
       {englishAlphabet.map((letter) => (
-        <Key 
-          key={letter} 
+        <Key
+          key={letter}
           letter={letter}
           onClick={handleKeyClick}
-          disable={isKeyDisabled(letter)} 
+          disable={isLetterContained(usedLetters, letter)}
         />
       ))}
     </div>

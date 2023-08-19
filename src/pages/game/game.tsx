@@ -1,9 +1,19 @@
-import { useState, useEffect, useCallback } from '../../hooks/hooks';
-import { Hangman, Keyboard, WordPattern } from './components/components';
+import { useState, useEffect, useCallback, useMemo } from '../../hooks/hooks';
+import {
+  Hangman,
+  Keyboard,
+  ResultModal,
+  WordPattern,
+} from './components/components';
+import {
+  getEnglishAlphabet,
+  getRandomWord,
+  isLetterContained,
+} from './helpers/helpers';
 import { Hint, Level } from '../../components/components';
 import { Word } from '../../common/interfaces/interfaces';
 import { MAX_MISTAKES } from '../../common/constants/constants';
-import { getRandomWord } from './helpers/helpers';
+import { levelService } from '../../services/services';
 
 import styles from './styles.module.scss';
 
@@ -14,42 +24,67 @@ const Game = () => {
 
   const [word] = useState<Word>(getRandomWord());
 
-  const isWrongLetter = useCallback((letter: string): boolean => 
-    word.title.toLowerCase().search(letter.toLowerCase()) === -1,
-  [word.title]);
+  const englishAlphabet = useMemo(getEnglishAlphabet, []);
 
-  const isLetterUsed = useCallback((letter: string): boolean =>
-    Boolean(usedLetters.find((lt) => lt.toLowerCase() === letter.toLowerCase())
-  ), [usedLetters]);
+  const isWrongLetter = useCallback(
+    (letter: string): boolean =>
+      word.title.toLowerCase().search(letter.toLowerCase()) === -1,
+    [word.title]
+  );
 
   const isWordFilled = useCallback((): boolean => {
     const letters = word.title.split('');
 
     for (let i = 0; i < letters.length; i++) {
-      if (letters[i] !== ' ' && !isLetterUsed(letters[i])) {
+      if (letters[i] !== ' ' && !isLetterContained(usedLetters, letters[i])) {
         return false;
       }
     }
-    
+
     return true;
-  }, [isLetterUsed, word.title]);
+  }, [usedLetters, word.title]);
 
-  const handleKeyboardClick = (letter: string) => {
-    if (isWrongLetter(letter)) {
-      setMistakesNumber(mistakesNumber + 1);
-    }
+  const isMistakeLimitExceeded = useCallback(
+    (): boolean => mistakesNumber >= MAX_MISTAKES,
+    [mistakesNumber]
+  );
 
-    setUsedLetters([...usedLetters, letter]);
-  }
+  const handleKeyClick = useCallback(
+    (letter: string) => {
+      if (isWrongLetter(letter)) {
+        setMistakesNumber(mistakesNumber + 1);
+      }
+
+      setUsedLetters([...usedLetters, letter]);
+    },
+    [isWrongLetter, mistakesNumber, usedLetters]
+  );
+
+  const handleKeydown = useCallback(
+    (event: KeyboardEvent): void => {
+      if (
+        isLetterContained(englishAlphabet, event.key) &&
+        !isLetterContained(usedLetters, event.key)
+      ) {
+        handleKeyClick(event.key);
+      }
+    },
+    [englishAlphabet, usedLetters, handleKeyClick]
+  );
 
   useEffect(() => {
-    if (mistakesNumber === MAX_MISTAKES) {
-      console.log("Game Over!");
+    addEventListener('keydown', handleKeydown);
+
+    if (isWordFilled() || isMistakeLimitExceeded()) {
+      if (isWordFilled()) {
+        levelService.incrementLevel();
+      }
+
+      removeEventListener('keydown', handleKeydown);
     }
-    else if (isWordFilled()) {
-      console.log("You won!");
-    }
-  }, [isWordFilled, mistakesNumber]);
+
+    return () => removeEventListener('keydown', handleKeydown);
+  }, [handleKeydown, isMistakeLimitExceeded, isWordFilled]);
 
   return (
     <div className={styles.container}>
@@ -61,9 +96,15 @@ const Game = () => {
 
       <WordPattern phrase={word.title} openLetters={usedLetters} />
 
-      <Keyboard usedLetters={usedLetters} onClick={handleKeyboardClick} />
+      <Keyboard usedLetters={usedLetters} onClick={handleKeyClick} />
+
+      {isWordFilled() && <ResultModal word={word.title} />}
+
+      {isMistakeLimitExceeded() && (
+        <ResultModal word={word.title} isWon={false} />
+      )}
     </div>
-  )
+  );
 };
 
 export { Game };

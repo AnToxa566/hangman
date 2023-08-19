@@ -10,10 +10,10 @@ const Key: React.FC<Props> = ({ letter, onClick, disable = false }) => {
   const handleClick = () => onClick(letter);
 
   return (
-    <button 
-      className={`${styles.key} ${disable ? styles.disable : ''}`} 
+    <button
+      className={`${styles.key} ${disable ? styles.disable : ''}`}
       onClick={handleClick}
-      disabled={disable} 
+      disabled={disable}
     >
       {letter}
     </button>

@@ -1,0 +1,10 @@
+<svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Head">
+<circle id="Ellipse 2" cx="17.5" cy="17.5" r="16" stroke="black" stroke-width="3"/>
+<line id="Line 1" x1="7.40687" y1="9.70938" x2="12.4069" y2="16.7094" stroke="black"/>
+<line id="Line 2" x1="6.70938" y1="14.5931" x2="13.7094" y2="9.59313" stroke="black"/>
+<line id="Line 3" x1="19.4069" y1="11.7094" x2="24.4069" y2="18.7094" stroke="black"/>
+<line id="Line 4" x1="18.7094" y1="16.5931" x2="25.7094" y2="11.5931" stroke="black"/>
+<path id="Vector 1" d="M5.5 22.5C9 21.8333 16.9 21.6 20.5 26" stroke="black" stroke-linecap="round"/>
+</g>
+</svg>
