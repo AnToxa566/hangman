@@ -1,4 +1,5 @@
-import { AppTitle } from '../../../../common/enums/enums';
+import { Link } from 'react-router-dom';
+import { AppPath, AppTitle } from '../../../../common/enums/enums';
 import { Modal } from '../../../../components/components';
 
 import styles from './styles.module.scss';
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const WinModal: React.FC<Props> = ({ word, coins }) => {
+  const handleRestart = () => window.location.reload();
+
   return (
     <Modal>
       <div className={styles.modal}>
@@ -25,11 +28,11 @@ const WinModal: React.FC<Props> = ({ word, coins }) => {
         </div>
 
         <div className={styles.footer}>
-          <button>
+          <Link to={AppPath.ROOT}>
             <img src="/public/icons/home.svg" alt="home" />
-          </button>
+          </Link>
 
-          <button>
+          <button onClick={handleRestart}>
             <img src="/public/icons/restart.svg" alt="restart" />
           </button>
         </div>
