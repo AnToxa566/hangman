@@ -1,4 +1,4 @@
-import { useState, useCallback } from '../../hooks/hooks';
+import { useState, useEffect, useCallback, useMemo } from '../../hooks/hooks';
 import {
   Hangman,
   Keyboard,
@@ -8,7 +8,11 @@ import {
 import { Hint, Level } from '../../components/components';
 import { Word } from '../../common/interfaces/interfaces';
 import { MAX_MISTAKES } from '../../common/constants/constants';
-import { getRandomWord, isLetterUsed } from './helpers/helpers';
+import {
+  getEnglishAlphabet,
+  getRandomWord,
+  isLetterContained,
+} from './helpers/helpers';
 
 import styles from './styles.module.scss';
 
@@ -18,6 +22,8 @@ const Game = () => {
   const [usedLetters, setUsedLetters] = useState<string[]>([]);
 
   const [word] = useState<Word>(getRandomWord());
+
+  const englishAlphabet = useMemo(getEnglishAlphabet, []);
 
   const isWrongLetter = useCallback(
     (letter: string): boolean =>
@@ -29,7 +35,7 @@ const Game = () => {
     const letters = word.title.split('');
 
     for (let i = 0; i < letters.length; i++) {
-      if (letters[i] !== ' ' && !isLetterUsed(usedLetters, letters[i])) {
+      if (letters[i] !== ' ' && !isLetterContained(usedLetters, letters[i])) {
         return false;
       }
     }
@@ -42,13 +48,38 @@ const Game = () => {
     [mistakesNumber]
   );
 
-  const handleKeyboardClick = (letter: string) => {
-    if (isWrongLetter(letter)) {
-      setMistakesNumber(mistakesNumber + 1);
+  const handleKeyClick = useCallback(
+    (letter: string) => {
+      if (isWrongLetter(letter)) {
+        setMistakesNumber(mistakesNumber + 1);
+      }
+
+      setUsedLetters([...usedLetters, letter]);
+    },
+    [isWrongLetter, mistakesNumber, usedLetters]
+  );
+
+  const handleKeydown = useCallback(
+    (event: KeyboardEvent): void => {
+      if (
+        isLetterContained(englishAlphabet, event.key) &&
+        !isLetterContained(usedLetters, event.key)
+      ) {
+        handleKeyClick(event.key);
+      }
+    },
+    [englishAlphabet, usedLetters, handleKeyClick]
+  );
+
+  useEffect(() => {
+    addEventListener('keydown', handleKeydown);
+
+    if (isWordFilled() || isMistakeLimitExceeded()) {
+      removeEventListener('keydown', handleKeydown);
     }
 
-    setUsedLetters([...usedLetters, letter]);
-  };
+    return () => removeEventListener('keydown', handleKeydown);
+  }, [handleKeydown, isMistakeLimitExceeded, isWordFilled]);
 
   return (
     <div className={styles.container}>
@@ -60,7 +91,7 @@ const Game = () => {
 
       <WordPattern phrase={word.title} openLetters={usedLetters} />
 
-      <Keyboard usedLetters={usedLetters} onClick={handleKeyboardClick} />
+      <Keyboard usedLetters={usedLetters} onClick={handleKeyClick} />
 
       {isWordFilled() && <ResultModal word={word.title} />}
 
