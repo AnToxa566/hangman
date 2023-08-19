@@ -1,8 +1,16 @@
 import { useState, useEffect, useCallback } from '../../hooks/hooks';
-import { Hangman, Keyboard, WordPattern } from './components/components';
+import {
+  Hangman,
+  Keyboard,
+  WinModal,
+  WordPattern,
+} from './components/components';
 import { Hint, Level } from '../../components/components';
 import { Word } from '../../common/interfaces/interfaces';
-import { MAX_MISTAKES } from '../../common/constants/constants';
+import {
+  COINS_FOR_VICTORY,
+  MAX_MISTAKES,
+} from '../../common/constants/constants';
 import { getRandomWord, isLetterUsed } from './helpers/helpers';
 
 import styles from './styles.module.scss';
@@ -14,9 +22,11 @@ const Game = () => {
 
   const [word] = useState<Word>(getRandomWord());
 
-  const isWrongLetter = useCallback((letter: string): boolean => 
-    word.title.toLowerCase().search(letter.toLowerCase()) === -1,
-  [word.title]);
+  const isWrongLetter = useCallback(
+    (letter: string): boolean =>
+      word.title.toLowerCase().search(letter.toLowerCase()) === -1,
+    [word.title]
+  );
 
   const isWordFilled = useCallback((): boolean => {
     const letters = word.title.split('');
@@ -26,7 +36,7 @@ const Game = () => {
         return false;
       }
     }
-    
+
     return true;
   }, [usedLetters, word.title]);
 
@@ -36,16 +46,13 @@ const Game = () => {
     }
 
     setUsedLetters([...usedLetters, letter]);
-  }
+  };
 
   useEffect(() => {
     if (mistakesNumber === MAX_MISTAKES) {
-      console.log("Game Over!");
+      console.log('Game Over!');
     }
-    else if (isWordFilled()) {
-      console.log("You won!");
-    }
-  }, [isWordFilled, mistakesNumber]);
+  }, [mistakesNumber]);
 
   return (
     <div className={styles.container}>
@@ -58,8 +65,12 @@ const Game = () => {
       <WordPattern phrase={word.title} openLetters={usedLetters} />
 
       <Keyboard usedLetters={usedLetters} onClick={handleKeyboardClick} />
+
+      {isWordFilled() && (
+        <WinModal word={word.title} coins={COINS_FOR_VICTORY} />
+      )}
     </div>
-  )
+  );
 };
 
 export { Game };

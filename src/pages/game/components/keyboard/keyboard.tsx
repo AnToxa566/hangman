@@ -13,32 +13,42 @@ interface Props {
 const Keyboard: React.FC<Props> = ({ usedLetters, onClick }) => {
   const englishAlphabet = useMemo(getEnglishAlphabet, []);
 
-  const isEnglishLetter = useCallback((letter: string): boolean =>
-    Boolean(englishAlphabet.find((lt) => lt.toLowerCase() === letter.toLowerCase())
-  ), [englishAlphabet]);
+  const isEnglishLetter = useCallback(
+    (letter: string): boolean =>
+      Boolean(
+        englishAlphabet.find((lt) => lt.toLowerCase() === letter.toLowerCase())
+      ),
+    [englishAlphabet]
+  );
 
-  const handleKeyClick = useCallback((letter: string) => onClick(letter), [onClick]);
+  const handleKeyClick = useCallback(
+    (letter: string) => onClick(letter),
+    [onClick]
+  );
 
-  const handleKeydown = useCallback((event: KeyboardEvent): void => {
-    if (isEnglishLetter(event.key) && !isLetterUsed(usedLetters, event.key)) {
-      onClick(event.key);
-    }
-  }, [isEnglishLetter, onClick, usedLetters]);
+  const handleKeydown = useCallback(
+    (event: KeyboardEvent): void => {
+      if (isEnglishLetter(event.key) && !isLetterUsed(usedLetters, event.key)) {
+        onClick(event.key);
+      }
+    },
+    [isEnglishLetter, onClick, usedLetters]
+  );
 
   useEffect(() => {
     addEventListener('keydown', handleKeydown);
 
     return () => removeEventListener('keydown', handleKeydown);
-  }, [handleKeydown])
+  }, [handleKeydown]);
 
   return (
     <div className={styles.keyboard}>
       {englishAlphabet.map((letter) => (
-        <Key 
-          key={letter} 
+        <Key
+          key={letter}
           letter={letter}
           onClick={handleKeyClick}
-          disable={isLetterUsed(usedLetters, letter)} 
+          disable={isLetterUsed(usedLetters, letter)}
         />
       ))}
     </div>
