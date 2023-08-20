@@ -1,7 +1,14 @@
-import { useState, useEffect, useCallback, useMemo } from '../../hooks/hooks';
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useNavigate,
+} from '../../hooks/hooks';
 import {
   Hangman,
   Keyboard,
+  MenuModal,
   ResultModal,
   WordPattern,
 } from './components/components';
@@ -10,18 +17,22 @@ import {
   getRandomWord,
   isLetterContained,
 } from './helpers/helpers';
-import { Hint, Level } from '../../components/components';
+import { Hint, IconButton, Level } from '../../components/components';
 import { Word } from '../../common/interfaces/interfaces';
+import { IconTitle, SoundTitle } from '../../common/enums/enums';
 import { MAX_MISTAKES } from '../../common/constants/constants';
 import { audioService, levelService } from '../../services/services';
 
 import styles from './styles.module.scss';
-import { SoundTitle } from '../../common/enums/enums';
 
 const Game = () => {
+  const navigate = useNavigate();
+
   const [mistakesNumber, setMistakesNumber] = useState<number>(0);
 
   const [usedLetters, setUsedLetters] = useState<string[]>([]);
+
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const [word] = useState<Word>(getRandomWord());
 
@@ -54,6 +65,11 @@ const Game = () => {
     [mistakesNumber]
   );
 
+  const isGameOver = useCallback(
+    (): boolean => isWordFilled() || isMistakeLimitExceeded(),
+    [isMistakeLimitExceeded, isWordFilled]
+  );
+
   const handleKeyClick = useCallback(
     (letter: string) => {
       if (isWrongLetter(letter)) {
@@ -83,7 +99,7 @@ const Game = () => {
   useEffect(() => {
     addEventListener('keydown', handleKeydown);
 
-    if (isWordFilled() || isMistakeLimitExceeded()) {
+    if (isGameOver()) {
       if (isWordFilled()) {
         levelService.incrementLevel();
         audioService.getAudio(SoundTitle.WIN).play();
@@ -95,10 +111,16 @@ const Game = () => {
     }
 
     return () => removeEventListener('keydown', handleKeydown);
-  }, [handleKeydown, isMistakeLimitExceeded, isWordFilled]);
+  }, [handleKeydown, isGameOver, isWordFilled]);
 
   return (
     <div className={styles.container}>
+      <IconButton
+        iconTitle={IconTitle.MENU}
+        onClick={() => setIsMenuOpen(true)}
+        className={styles.menu}
+      />
+
       <Level />
 
       <Hangman className={styles.hangman} mistakesNum={mistakesNumber} />
@@ -109,11 +131,18 @@ const Game = () => {
 
       <Keyboard usedLetters={usedLetters} onClick={handleKeyClick} />
 
-      {isWordFilled() && <ResultModal word={word.title} />}
+      <ResultModal
+        word={word.title}
+        isOpen={isGameOver()}
+        isWon={isWordFilled()}
+        onRestart={() => navigate(0)}
+      />
 
-      {isMistakeLimitExceeded() && (
-        <ResultModal word={word.title} isWon={false} />
-      )}
+      <MenuModal
+        isOpen={isMenuOpen}
+        onRestart={() => navigate(0)}
+        onClose={() => setIsMenuOpen(false)}
+      />
     </div>
   );
 };
