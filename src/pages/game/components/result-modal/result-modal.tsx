@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { AppPath, AppTitle } from '../../../../common/enums/enums';
-import { Modal } from '../../../../components/components';
+import { AppPath, AppTitle, IconTitle } from '../../../../common/enums/enums';
+import { Icon, Modal } from '../../../../components/components';
 import { COINS_FOR_VICTORY } from '../../../../common/constants/constants';
 
 import styles from './styles.module.scss';
@@ -35,11 +35,11 @@ const ResultModal: React.FC<Props> = ({ word, isWon = true }) => {
 
         <div className={styles.footer}>
           <Link to={AppPath.ROOT}>
-            <img src="/public/icons/home.svg" alt="home" />
+            <Icon title={IconTitle.HOME} clicable />
           </Link>
 
           <button onClick={handleRestart}>
-            <img src="/public/icons/restart.svg" alt="restart" />
+            <Icon title={IconTitle.RESTART} clicable />
           </button>
         </div>
       </div>
