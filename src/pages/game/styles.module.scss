@@ -1,4 +1,6 @@
 .container {
+  position: relative;
+
   display: flex;
   flex-direction: column;
 
@@ -8,6 +10,13 @@
 
   padding: 2rem;
   min-height: 100vh;
+
+  .menu {
+    position: absolute;
+
+    top: 2rem;
+    right: 2rem;
+  }
 
   .hangman {
     height: 30vh;

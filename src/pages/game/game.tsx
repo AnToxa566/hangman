@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from '../../hooks/hooks';
 import {
   Hangman,
   Keyboard,
+  MenuModal,
   ResultModal,
   WordPattern,
 } from './components/components';
@@ -10,18 +11,20 @@ import {
   getRandomWord,
   isLetterContained,
 } from './helpers/helpers';
-import { Hint, Level } from '../../components/components';
+import { Hint, IconButton, Level } from '../../components/components';
 import { Word } from '../../common/interfaces/interfaces';
+import { IconTitle, SoundTitle } from '../../common/enums/enums';
 import { MAX_MISTAKES } from '../../common/constants/constants';
 import { audioService, levelService } from '../../services/services';
 
 import styles from './styles.module.scss';
-import { SoundTitle } from '../../common/enums/enums';
 
 const Game = () => {
   const [mistakesNumber, setMistakesNumber] = useState<number>(0);
 
   const [usedLetters, setUsedLetters] = useState<string[]>([]);
+
+  const [isPause, setIsPause] = useState<boolean>(false);
 
   const [word] = useState<Word>(getRandomWord());
 
@@ -80,6 +83,10 @@ const Game = () => {
     [englishAlphabet, usedLetters, handleKeyClick]
   );
 
+  const handleMenuBtnClick = () => setIsPause(true);
+
+  const handleMenuClose = () => setIsPause(false);
+
   useEffect(() => {
     addEventListener('keydown', handleKeydown);
 
@@ -99,6 +106,12 @@ const Game = () => {
 
   return (
     <div className={styles.container}>
+      <IconButton
+        iconTitle={IconTitle.MENU}
+        onClick={handleMenuBtnClick}
+        className={styles.menu}
+      />
+
       <Level />
 
       <Hangman className={styles.hangman} mistakesNum={mistakesNumber} />
@@ -114,6 +127,8 @@ const Game = () => {
       {isMistakeLimitExceeded() && (
         <ResultModal word={word.title} isWon={false} />
       )}
+
+      {isPause && <MenuModal onClose={handleMenuClose} />}
     </div>
   );
 };

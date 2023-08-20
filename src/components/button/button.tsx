@@ -8,12 +8,12 @@ interface Props {
   onClick?: () => void;
 }
 
-const Button: React.FC<Props> = ({ text, onClick }) => {
+const Button: React.FC<Props> = ({ text, onClick = () => {} }) => {
   const audio = audioService.getAudio(SoundTitle.BUTTON_CLICK);
 
   const handleClick = () => {
     audio.play();
-    onClick?.();
+    onClick();
   };
 
   return (
