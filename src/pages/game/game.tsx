@@ -24,7 +24,7 @@ const Game = () => {
 
   const [usedLetters, setUsedLetters] = useState<string[]>([]);
 
-  const [isPause, setIsPause] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const [word] = useState<Word>(getRandomWord());
 
@@ -57,6 +57,8 @@ const Game = () => {
     [mistakesNumber]
   );
 
+  const isGameOver = (): boolean => isWordFilled() || isMistakeLimitExceeded();
+
   const handleKeyClick = useCallback(
     (letter: string) => {
       if (isWrongLetter(letter)) {
@@ -83,14 +85,10 @@ const Game = () => {
     [englishAlphabet, usedLetters, handleKeyClick]
   );
 
-  const handleMenuBtnClick = () => setIsPause(true);
-
-  const handleMenuClose = () => setIsPause(false);
-
   useEffect(() => {
     addEventListener('keydown', handleKeydown);
 
-    if (isWordFilled() || isMistakeLimitExceeded()) {
+    if (isGameOver()) {
       if (isWordFilled()) {
         levelService.incrementLevel();
         audioService.getAudio(SoundTitle.WIN).play();
@@ -102,13 +100,13 @@ const Game = () => {
     }
 
     return () => removeEventListener('keydown', handleKeydown);
-  }, [handleKeydown, isMistakeLimitExceeded, isWordFilled]);
+  }, [handleKeydown, isGameOver, isWordFilled]);
 
   return (
     <div className={styles.container}>
       <IconButton
         iconTitle={IconTitle.MENU}
-        onClick={handleMenuBtnClick}
+        onClick={() => setIsMenuOpen(true)}
         className={styles.menu}
       />
 
@@ -122,13 +120,13 @@ const Game = () => {
 
       <Keyboard usedLetters={usedLetters} onClick={handleKeyClick} />
 
-      {isWordFilled() && <ResultModal word={word.title} />}
+      <ResultModal
+        isOpen={isGameOver()}
+        word={word.title}
+        isWon={isWordFilled()}
+      />
 
-      {isMistakeLimitExceeded() && (
-        <ResultModal word={word.title} isWon={false} />
-      )}
-
-      {isPause && <MenuModal onClose={handleMenuClose} />}
+      <MenuModal isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </div>
   );
 };

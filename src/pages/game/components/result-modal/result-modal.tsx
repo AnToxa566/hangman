@@ -7,12 +7,13 @@ import styles from './styles.module.scss';
 
 interface Props {
   word: string;
+  isOpen: boolean;
   isWon?: boolean;
 }
 
-const ResultModal: React.FC<Props> = ({ word, isWon = true }) => {
+const ResultModal: React.FC<Props> = ({ word, isOpen, isWon = true }) => {
   return (
-    <Modal>
+    <Modal isOpen={isOpen}>
       <div className={styles.modal}>
         <ModalTitle
           title={isWon ? AppTitle.YOU_WON : AppTitle.GAME_OVER}
