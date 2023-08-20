@@ -1,4 +1,10 @@
-import { useState, useEffect, useCallback, useMemo } from '../../hooks/hooks';
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useNavigate,
+} from '../../hooks/hooks';
 import {
   Hangman,
   Keyboard,
@@ -20,6 +26,8 @@ import { audioService, levelService } from '../../services/services';
 import styles from './styles.module.scss';
 
 const Game = () => {
+  const navigate = useNavigate();
+
   const [mistakesNumber, setMistakesNumber] = useState<number>(0);
 
   const [usedLetters, setUsedLetters] = useState<string[]>([]);
@@ -57,7 +65,10 @@ const Game = () => {
     [mistakesNumber]
   );
 
-  const isGameOver = (): boolean => isWordFilled() || isMistakeLimitExceeded();
+  const isGameOver = useCallback(
+    (): boolean => isWordFilled() || isMistakeLimitExceeded(),
+    [isMistakeLimitExceeded, isWordFilled]
+  );
 
   const handleKeyClick = useCallback(
     (letter: string) => {
@@ -121,12 +132,17 @@ const Game = () => {
       <Keyboard usedLetters={usedLetters} onClick={handleKeyClick} />
 
       <ResultModal
-        isOpen={isGameOver()}
         word={word.title}
+        isOpen={isGameOver()}
         isWon={isWordFilled()}
+        onRestart={() => navigate(0)}
       />
 
-      <MenuModal isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <MenuModal
+        isOpen={isMenuOpen}
+        onRestart={() => navigate(0)}
+        onClose={() => setIsMenuOpen(false)}
+      />
     </div>
   );
 };

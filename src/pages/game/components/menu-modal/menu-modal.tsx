@@ -6,17 +6,18 @@ import styles from './styles.module.scss';
 
 interface Props {
   isOpen: boolean;
+  onRestart: () => void;
   onClose: () => void;
 }
 
-const MenuModal: React.FC<Props> = ({ isOpen, onClose }) => {
+const MenuModal: React.FC<Props> = ({ isOpen, onRestart, onClose }) => {
   const handleClose = () => onClose();
 
   return (
     <Modal isOpen={isOpen} closable onClose={handleClose}>
       <div className={styles.modal}>
         <ModalTitle title={AppTitle.MENU} />
-        <ModalActions />
+        <ModalActions onRestart={onRestart} />
       </div>
     </Modal>
   );

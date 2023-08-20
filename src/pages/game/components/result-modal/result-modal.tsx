@@ -8,10 +8,16 @@ import styles from './styles.module.scss';
 interface Props {
   word: string;
   isOpen: boolean;
+  onRestart: () => void;
   isWon?: boolean;
 }
 
-const ResultModal: React.FC<Props> = ({ word, isOpen, isWon = true }) => {
+const ResultModal: React.FC<Props> = ({
+  word,
+  isOpen,
+  onRestart,
+  isWon = true,
+}) => {
   return (
     <Modal isOpen={isOpen}>
       <div className={styles.modal}>
@@ -32,7 +38,7 @@ const ResultModal: React.FC<Props> = ({ word, isOpen, isWon = true }) => {
           )}
         </div>
 
-        <ModalActions />
+        <ModalActions onRestart={onRestart} />
       </div>
     </Modal>
   );
