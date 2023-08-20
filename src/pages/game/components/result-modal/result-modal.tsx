@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { AppPath, AppTitle, IconTitle } from '../../../../common/enums/enums';
 import { Icon, Modal } from '../../../../components/components';
 import { COINS_FOR_VICTORY } from '../../../../common/constants/constants';
+import { useNavigate } from '../../../../hooks/hooks';
 
 import styles from './styles.module.scss';
 
@@ -11,7 +12,9 @@ interface Props {
 }
 
 const ResultModal: React.FC<Props> = ({ word, isWon = true }) => {
-  const handleRestart = () => window.location.reload();
+  const navigate = useNavigate();
+
+  const handleRestart = () => navigate(0);
 
   return (
     <Modal>

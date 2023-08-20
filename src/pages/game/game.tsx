@@ -86,6 +86,9 @@ const Game = () => {
     if (isWordFilled() || isMistakeLimitExceeded()) {
       if (isWordFilled()) {
         levelService.incrementLevel();
+        audioService.getAudio(SoundTitle.WIN).play();
+      } else {
+        audioService.getAudio(SoundTitle.LOSE).play();
       }
 
       removeEventListener('keydown', handleKeydown);
