@@ -13,9 +13,10 @@ import {
 import { Hint, Level } from '../../components/components';
 import { Word } from '../../common/interfaces/interfaces';
 import { MAX_MISTAKES } from '../../common/constants/constants';
-import { levelService } from '../../services/services';
+import { audioService, levelService } from '../../services/services';
 
 import styles from './styles.module.scss';
+import { SoundTitle } from '../../common/enums/enums';
 
 const Game = () => {
   const [mistakesNumber, setMistakesNumber] = useState<number>(0);
@@ -25,6 +26,10 @@ const Game = () => {
   const [word] = useState<Word>(getRandomWord());
 
   const englishAlphabet = useMemo(getEnglishAlphabet, []);
+
+  const correctAudio = audioService.getAudio(SoundTitle.CORRECT_CHOOSE);
+
+  const wrongAudio = audioService.getAudio(SoundTitle.WRONG_CHOOSE);
 
   const isWrongLetter = useCallback(
     (letter: string): boolean =>
@@ -53,11 +58,14 @@ const Game = () => {
     (letter: string) => {
       if (isWrongLetter(letter)) {
         setMistakesNumber(mistakesNumber + 1);
+        wrongAudio.play();
+      } else {
+        correctAudio.play();
       }
 
       setUsedLetters([...usedLetters, letter]);
     },
-    [isWrongLetter, mistakesNumber, usedLetters]
+    [isWrongLetter, mistakesNumber, usedLetters, correctAudio, wrongAudio]
   );
 
   const handleKeydown = useCallback(
@@ -78,6 +86,9 @@ const Game = () => {
     if (isWordFilled() || isMistakeLimitExceeded()) {
       if (isWordFilled()) {
         levelService.incrementLevel();
+        audioService.getAudio(SoundTitle.WIN).play();
+      } else {
+        audioService.getAudio(SoundTitle.LOSE).play();
       }
 
       removeEventListener('keydown', handleKeydown);
