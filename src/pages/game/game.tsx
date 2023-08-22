@@ -8,6 +8,7 @@ import {
 } from '../../hooks/hooks';
 
 import {
+  Coins,
   Hangman,
   Keyboard,
   MenuModal,
@@ -77,6 +78,8 @@ const Game = () => {
 
   return (
     <div className={styles.container}>
+      <Coins className={styles.coins} />
+
       <IconButton
         iconTitle={IconTitle.MENU}
         onClick={() => setIsMenuOpen(true)}

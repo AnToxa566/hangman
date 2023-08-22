@@ -1,14 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { Word } from '../../common/interfaces/interfaces';
-import { getRandomWord, isWordFilled } from '../../helpers/helpers';
-import { MAX_MISTAKES } from '../../common/constants/constants';
-import { audioService, levelService } from '../../services/services';
 import { SoundTitle } from '../../common/enums/enums';
+import { Word } from '../../common/interfaces/interfaces';
+import {
+  COINS_FOR_VICTORY,
+  MAX_MISTAKES,
+} from '../../common/constants/constants';
+import { getRandomWord, isWordFilled } from '../../helpers/helpers';
+import {
+  audioService,
+  coinService,
+  levelService,
+} from '../../services/services';
 
 interface HangmanState {
   word: Word;
+  coins: number;
   level: number;
   usedLetters: string[];
   mistakesNumber: number;
@@ -19,6 +27,7 @@ interface HangmanState {
 
 const initialState: HangmanState = {
   word: getRandomWord(),
+  coins: coinService.getCoins(),
   level: levelService.getLevel(),
   usedLetters: [],
   mistakesNumber: 0,
@@ -58,8 +67,10 @@ export const hangmanSlice = createSlice({
         state.isGameOver = true;
         state.isWon = true;
 
-        audioService.getAudio(SoundTitle.WIN).play();
+        state.coins = coinService.incrementCoins(COINS_FOR_VICTORY);
         state.level = levelService.incrementLevel();
+
+        audioService.getAudio(SoundTitle.WIN).play();
       }
     },
     restartGame: (state) => {
