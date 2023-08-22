@@ -17,12 +17,14 @@ class Level {
     );
   }
 
-  incrementLevel(): void {
+  incrementLevel(): number {
     const level = Number(localStorage.getItem(StorageKey.LEVEL_NUMBER));
 
     if (typeof level === 'number' && !isNaN(level)) {
       localStorage.setItem(StorageKey.LEVEL_NUMBER, (level + 1).toString());
     }
+
+    return level + 1;
   }
 }
 

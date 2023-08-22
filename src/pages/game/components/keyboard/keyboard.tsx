@@ -1,6 +1,9 @@
 import { useMemo, useCallback } from '../../../../hooks/hooks';
 import { Key } from './components/components';
-import { getEnglishAlphabet, isLetterContained } from '../../helpers/helpers';
+import {
+  isLetterContained,
+  getEnglishAlphabet,
+} from '../../../../helpers/helpers';
 
 import styles from './styles.module.scss';
 

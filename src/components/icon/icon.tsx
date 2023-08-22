@@ -6,9 +6,7 @@ interface Props {
 }
 
 const Icon: React.FC<Props> = ({ title, className = '' }) => {
-  return (
-    <img src={`/public/icons/${title}.svg`} className={className} alt={title} />
-  );
+  return <img src={`/icons/${title}.svg`} className={className} alt={title} />;
 };
 
 export { Icon };

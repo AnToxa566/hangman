@@ -36,7 +36,6 @@ const Modal: React.FC<Props> = ({
                 X
               </button>
             )}
-
             {children}
           </div>
         </div>

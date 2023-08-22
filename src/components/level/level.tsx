@@ -1,16 +1,12 @@
-import { useEffect, useState } from '../../hooks/hooks';
-import { levelService } from '../../services/services';
+import { useSelector } from '../../hooks/hooks';
+import { RootState } from '../../store/store';
 
 import styles from './styles.module.scss';
 
 const Level = () => {
-  const [levelNumber, setLevelNumber] = useState<number>();
+  const { level } = useSelector((state: RootState) => state.hangman);
 
-  useEffect(() => {
-    setLevelNumber(levelService.getLevel());
-  }, []);
-
-  return <span className={styles.level}>Level {levelNumber}</span>;
+  return <span className={styles.level}>Level {level}</span>;
 };
 
 export { Level };
