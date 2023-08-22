@@ -6,7 +6,7 @@ import { AppPath, IconTitle } from '../../../../common/enums/enums';
 import styles from './styles.module.scss';
 
 interface Props {
-  onRestart: () => void;
+  onRestart?: () => void;
 }
 
 const ModalActions: React.FC<Props> = ({ onRestart }) => {

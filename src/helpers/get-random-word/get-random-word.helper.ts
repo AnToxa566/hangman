@@ -1,5 +1,5 @@
-import wordCategories from '../../../../assets/data/wordCategories.json';
-import { Word, WordCategory } from '../../../../common/interfaces/interfaces';
+import wordCategories from '../../assets/data/wordCategories.json';
+import { Word, WordCategory } from '../../common/interfaces/interfaces';
 
 const getRandomWord = (): Word => {
   const catRandomIndex = Math.floor(Math.random() * wordCategories.length);

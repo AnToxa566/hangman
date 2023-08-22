@@ -248,5 +248,166 @@
       "watch",
       "coat"
     ]
+  },
+  {
+    "category": "colors",
+    "words": [
+      "red",
+      "blue",
+      "green",
+      "grey",
+      "yellow",
+      "orange",
+      "purple",
+      "pink",
+      "brown",
+      "black",
+      "white"
+    ]
+  },
+  {
+    "category": "professions",
+    "words": [
+      "doctor",
+      "dentist",
+      "chef",
+      "policeman",
+      "hairdresser",
+      "secretary",
+      "baker",
+      "farmer",
+      "teacher",
+      "engineer",
+      "artist",
+      "actor",
+      "chef",
+      "writer",
+      "waiter",
+      "musician",
+      "pilot",
+      "lawyer",
+      "scientist",
+      "journalist"
+    ]
+  },
+  {
+    "category": "countries",
+    "words": [
+      "USA",
+      "France",
+      "Japan",
+      "Germany",
+      "China",
+      "Russia",
+      "Brazil",
+      "India",
+      "Australia",
+      "Canada",
+      "Ukraine",
+      "Portugal",
+      "Spain",
+      "Switzerland",
+      "Poland",
+      "Italy",
+      "Greece",
+      "Egypt",
+      "South Korea",
+      "Bulgaria"
+    ]
+  },
+  {
+    "category": "flowers",
+    "words": [
+      "rose",
+      "tulip",
+      "sunflower",
+      "lily",
+      "orchid",
+      "daisy",
+      "violet",
+      "iris",
+      "peony",
+      "marigold"
+    ]
+  },
+  {
+    "category": "musical instruments",
+    "words": [
+      "Guitar",
+      "Piano",
+      "Violin",
+      "Drums",
+      "Flute",
+      "Trumpet",
+      "Saxophone",
+      "Cello",
+      "Harp",
+      "Accordion"
+    ]
+  },
+  {
+    "category": "famous people",
+    "words": [
+      "Albert Einstein",
+      "Leonardo da Vinci",
+      "Marilyn Monroe",
+      "Nelson Mandela",
+      "Oprah Winfrey",
+      "Steve Jobs",
+      "Serena Williams",
+      "Elon Musk",
+      "Malala Yousafzai",
+      "Mahatma Gandhi",
+      "Martin Luther King Jr.",
+      "Mother Teresa",
+      "Winston Churchill",
+      "Amelia Earhart",
+      "Marie Curie",
+      "Pablo Picasso",
+      "Michael Jackson",
+      "Queen Elizabeth II",
+      "Napoleon Bonaparte",
+      "Vincent van Gogh"
+    ]
+  },
+  {
+    "category": "technology",
+    "words": [
+      "Artificial Intelligence",
+      "Blockchain",
+      "Virtual Reality",
+      "Augmented Reality",
+      "Machine Learning",
+      "Cybersecurity",
+      "Internet of Things",
+      "3D Printing",
+      "Biotechnology",
+      "Quantum Computing",
+      "Cryptocurrency",
+      "Self-driving Cars",
+      "Smartphone",
+      "Robotics",
+      "Drones",
+      "Wireless Charging",
+      "SpaceX",
+      "Facial Recognition",
+      "Cloud Computing",
+      "Biometric Authentication"
+    ]
+  },
+  {
+    "category": "transport",
+    "words": [
+      "Car",
+      "Bicycle",
+      "Train",
+      "Airplane",
+      "Helicopter",
+      "Submarine",
+      "Hot Air Balloon",
+      "Spaceship",
+      "Scooter",
+      "Jet Ski"
+    ]
   }
 ]

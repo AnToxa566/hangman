@@ -2,9 +2,11 @@ import {
   useState,
   useEffect,
   useCallback,
+  useDispatch,
+  useSelector,
   useMemo,
-  useNavigate,
 } from '../../hooks/hooks';
+
 import {
   Hangman,
   Keyboard,
@@ -12,76 +14,35 @@ import {
   ResultModal,
   WordPattern,
 } from './components/components';
-import {
-  getEnglishAlphabet,
-  getRandomWord,
-  isLetterContained,
-} from './helpers/helpers';
+
 import { Hint, IconButton, Level } from '../../components/components';
-import { Word } from '../../common/interfaces/interfaces';
-import { IconTitle, SoundTitle } from '../../common/enums/enums';
-import { MAX_MISTAKES } from '../../common/constants/constants';
-import { audioService, levelService } from '../../services/services';
+
+import { isLetterContained, getEnglishAlphabet } from '../../helpers/helpers';
+import { IconTitle } from '../../common/enums/enums';
+
+import { RootState } from '../../store/store';
+import { chooseLetter, restartGame } from '../../store/hangman/hangman.slice';
 
 import styles from './styles.module.scss';
 
 const Game = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [mistakesNumber, setMistakesNumber] = useState<number>(0);
-
-  const [usedLetters, setUsedLetters] = useState<string[]>([]);
+  const { word, usedLetters, mistakesNumber, isGameOver, isWon } = useSelector(
+    (state: RootState) => state.hangman
+  );
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const [word] = useState<Word>(getRandomWord());
+  const [isResultModalOpen, setIsResultModalOpen] = useState<boolean>(false);
 
   const englishAlphabet = useMemo(getEnglishAlphabet, []);
 
-  const correctAudio = audioService.getAudio(SoundTitle.CORRECT_CHOOSE);
-
-  const wrongAudio = audioService.getAudio(SoundTitle.WRONG_CHOOSE);
-
-  const isWrongLetter = useCallback(
-    (letter: string): boolean =>
-      word.title.toLowerCase().search(letter.toLowerCase()) === -1,
-    [word.title]
-  );
-
-  const isWordFilled = useCallback((): boolean => {
-    const letters = word.title.split('');
-
-    for (let i = 0; i < letters.length; i++) {
-      if (letters[i] !== ' ' && !isLetterContained(usedLetters, letters[i])) {
-        return false;
-      }
-    }
-
-    return true;
-  }, [usedLetters, word.title]);
-
-  const isMistakeLimitExceeded = useCallback(
-    (): boolean => mistakesNumber >= MAX_MISTAKES,
-    [mistakesNumber]
-  );
-
-  const isGameOver = useCallback(
-    (): boolean => isWordFilled() || isMistakeLimitExceeded(),
-    [isMistakeLimitExceeded, isWordFilled]
-  );
-
   const handleKeyClick = useCallback(
     (letter: string) => {
-      if (isWrongLetter(letter)) {
-        setMistakesNumber(mistakesNumber + 1);
-        wrongAudio.play();
-      } else {
-        correctAudio.play();
-      }
-
-      setUsedLetters([...usedLetters, letter]);
+      dispatch(chooseLetter(letter));
     },
-    [isWrongLetter, mistakesNumber, usedLetters, correctAudio, wrongAudio]
+    [dispatch]
   );
 
   const handleKeydown = useCallback(
@@ -90,28 +51,29 @@ const Game = () => {
         isLetterContained(englishAlphabet, event.key) &&
         !isLetterContained(usedLetters, event.key)
       ) {
-        handleKeyClick(event.key);
+        dispatch(chooseLetter(event.key));
       }
     },
-    [englishAlphabet, usedLetters, handleKeyClick]
+    [englishAlphabet, usedLetters, dispatch]
   );
+
+  const handleRestart = () => {
+    setIsMenuOpen(false);
+    setIsResultModalOpen(false);
+
+    setTimeout(() => dispatch(restartGame()), 1200);
+  };
 
   useEffect(() => {
     addEventListener('keydown', handleKeydown);
 
-    if (isGameOver()) {
-      if (isWordFilled()) {
-        levelService.incrementLevel();
-        audioService.getAudio(SoundTitle.WIN).play();
-      } else {
-        audioService.getAudio(SoundTitle.LOSE).play();
-      }
-
+    if (isGameOver) {
+      setIsResultModalOpen(true);
       removeEventListener('keydown', handleKeydown);
     }
 
     return () => removeEventListener('keydown', handleKeydown);
-  }, [handleKeydown, isGameOver, isWordFilled]);
+  }, [isGameOver, handleKeydown]);
 
   return (
     <div className={styles.container}>
@@ -133,14 +95,14 @@ const Game = () => {
 
       <ResultModal
         word={word.title}
-        isOpen={isGameOver()}
-        isWon={isWordFilled()}
-        onRestart={() => navigate(0)}
+        isOpen={isResultModalOpen}
+        isWon={isWon}
+        onRestart={handleRestart}
       />
 
       <MenuModal
         isOpen={isMenuOpen}
-        onRestart={() => navigate(0)}
+        onRestart={handleRestart}
         onClose={() => setIsMenuOpen(false)}
       />
     </div>

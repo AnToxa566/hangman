@@ -9,7 +9,7 @@ const Hangman: React.FC<Props> = ({ mistakesNum, className = '' }) => {
   return (
     <img
       className={className}
-      src={`/public/images/hangman-${
+      src={`/images/hangman-${
         mistakesNum <= MAX_MISTAKES ? mistakesNum : MAX_MISTAKES
       }.png`}
     />
