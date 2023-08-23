@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import hangmanReducer from './hangman/hangman.slice';
+import { reducer as hangmanReducer } from './hangman/hangman';
 
 export const store = configureStore({
   reducer: {

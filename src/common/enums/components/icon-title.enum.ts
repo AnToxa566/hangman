@@ -1,4 +1,5 @@
 enum IconTitle {
+  BLUB = 'blub',
   COIN = 'coin',
   CIRCLE_COIN = 'circle-coin',
   HOME = 'home',

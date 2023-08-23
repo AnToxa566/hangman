@@ -10,19 +10,20 @@ import {
 import {
   Coins,
   Hangman,
+  HintButton,
   Keyboard,
   MenuModal,
   ResultModal,
   WordPattern,
 } from './components/components';
 
-import { Hint, IconButton, Level } from '../../components/components';
+import { Chip, IconButton, Level } from '../../components/components';
 
 import { isLetterContained, getEnglishAlphabet } from '../../helpers/helpers';
 import { IconTitle } from '../../common/enums/enums';
 
 import { RootState } from '../../store/store';
-import { chooseLetter, restartGame } from '../../store/hangman/hangman.slice';
+import { actions as hangmanActionCreator } from '../../store/hangman/hangman';
 
 import styles from './styles.module.scss';
 
@@ -41,7 +42,7 @@ const Game = () => {
 
   const handleKeyClick = useCallback(
     (letter: string) => {
-      dispatch(chooseLetter(letter));
+      dispatch(hangmanActionCreator.chooseLetter(letter));
     },
     [dispatch]
   );
@@ -52,7 +53,7 @@ const Game = () => {
         isLetterContained(englishAlphabet, event.key) &&
         !isLetterContained(usedLetters, event.key)
       ) {
-        dispatch(chooseLetter(event.key));
+        dispatch(hangmanActionCreator.chooseLetter(event.key));
       }
     },
     [englishAlphabet, usedLetters, dispatch]
@@ -62,7 +63,7 @@ const Game = () => {
     setIsMenuOpen(false);
     setIsResultModalOpen(false);
 
-    setTimeout(() => dispatch(restartGame()), 1200);
+    setTimeout(() => dispatch(hangmanActionCreator.restartGame()), 1200);
   };
 
   useEffect(() => {
@@ -86,11 +87,13 @@ const Game = () => {
         className={styles.menu}
       />
 
+      <HintButton className={styles.hint} />
+
       <Level />
 
       <Hangman className={styles.hangman} mistakesNum={mistakesNumber} />
 
-      <Hint text={word.category} />
+      <Chip text={word.category} />
 
       <WordPattern phrase={word.title} openLetters={usedLetters} />
 

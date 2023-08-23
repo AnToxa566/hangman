@@ -5,6 +5,7 @@ import { SoundTitle } from '../../common/enums/enums';
 import { Word } from '../../common/interfaces/interfaces';
 import {
   COINS_FOR_VICTORY,
+  HINT_COST,
   MAX_MISTAKES,
 } from '../../common/constants/constants';
 import { getRandomWord, isWordFilled } from '../../helpers/helpers';
@@ -13,6 +14,7 @@ import {
   coinService,
   levelService,
 } from '../../services/services';
+import { useHint } from './hangman.actions';
 
 interface HangmanState {
   word: Word;
@@ -36,13 +38,10 @@ const initialState: HangmanState = {
   isWon: false,
 };
 
-export const hangmanSlice = createSlice({
+const { reducer, actions, name } = createSlice({
   name: 'hangman',
   initialState,
   reducers: {
-    generateWord: (state) => {
-      state.word = getRandomWord();
-    },
     chooseLetter: (state, action: PayloadAction<string>) => {
       state.usedLetters.push(action.payload);
       state.isLetterRight =
@@ -82,8 +81,15 @@ export const hangmanSlice = createSlice({
       state.isWon = false;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(useHint.fulfilled, (state) => {
+        state.coins = coinService.decrementCoins(HINT_COST);
+      })
+      .addCase(useHint.rejected, (_state, action) => {
+        alert(action.payload);
+      });
+  },
 });
 
-export const { generateWord, chooseLetter, restartGame } = hangmanSlice.actions;
-
-export default hangmanSlice.reducer;
+export { actions, name, reducer };

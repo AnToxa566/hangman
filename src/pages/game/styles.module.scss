@@ -14,7 +14,8 @@
   min-height: 100vh;
 
   .menu,
-  .coins {
+  .coins,
+  .hint {
     position: absolute;
   }
 
@@ -26,6 +27,11 @@
   .coins {
     top: var(--padding);
     left: var(--padding);
+  }
+
+  .hint {
+    bottom: var(--padding);
+    right: var(--padding);
   }
 
   .hangman {

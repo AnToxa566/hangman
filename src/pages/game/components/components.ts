@@ -5,4 +5,5 @@ export { ModalTitle } from './modal-title/modal-title';
 export { ModalActions } from './modal-actions/modal-actions';
 export { MenuModal } from './menu-modal/menu-modal';
 export { ResultModal } from './result-modal/result-modal';
+export { HintButton } from './hint-button/hint-button';
 export { Coins } from './coins/coins';
