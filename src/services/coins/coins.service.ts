@@ -10,14 +10,14 @@ class Coins {
   }
 
   getCoins(): number {
-    const coins = Number(localStorage.getItem(StorageKey.COINS));
+    const coins = localStorage.getItem(StorageKey.COINS);
 
-    if (typeof coins !== 'number' || isNaN(coins)) {
+    if (coins === null) {
       this.setCoins(this.DEFAULT_COINS);
       return this.DEFAULT_COINS;
     }
 
-    return coins;
+    return Number(coins);
   }
 
   incrementCoins(addCoins: number): number {
