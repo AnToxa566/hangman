@@ -1,14 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { Word } from '../../common/interfaces/interfaces';
-import { getRandomWord, isWordFilled } from '../../helpers/helpers';
-import { MAX_MISTAKES } from '../../common/constants/constants';
-import { audioService, levelService } from '../../services/services';
 import { SoundTitle } from '../../common/enums/enums';
+import { Word } from '../../common/interfaces/interfaces';
+import {
+  COINS_FOR_VICTORY,
+  HINT_COST,
+  MAX_MISTAKES,
+} from '../../common/constants/constants';
+import { getRandomWord, isWordFilled } from '../../helpers/helpers';
+import {
+  audioService,
+  coinService,
+  levelService,
+} from '../../services/services';
+import { useHint } from './hangman.actions';
 
 interface HangmanState {
   word: Word;
+  coins: number;
   level: number;
   usedLetters: string[];
   mistakesNumber: number;
@@ -19,6 +29,7 @@ interface HangmanState {
 
 const initialState: HangmanState = {
   word: getRandomWord(),
+  coins: coinService.getCoins(),
   level: levelService.getLevel(),
   usedLetters: [],
   mistakesNumber: 0,
@@ -27,13 +38,10 @@ const initialState: HangmanState = {
   isWon: false,
 };
 
-export const hangmanSlice = createSlice({
+const { reducer, actions, name } = createSlice({
   name: 'hangman',
   initialState,
   reducers: {
-    generateWord: (state) => {
-      state.word = getRandomWord();
-    },
     chooseLetter: (state, action: PayloadAction<string>) => {
       state.usedLetters.push(action.payload);
       state.isLetterRight =
@@ -58,8 +66,10 @@ export const hangmanSlice = createSlice({
         state.isGameOver = true;
         state.isWon = true;
 
-        audioService.getAudio(SoundTitle.WIN).play();
+        state.coins = coinService.incrementCoins(COINS_FOR_VICTORY);
         state.level = levelService.incrementLevel();
+
+        audioService.getAudio(SoundTitle.WIN).play();
       }
     },
     restartGame: (state) => {
@@ -71,8 +81,15 @@ export const hangmanSlice = createSlice({
       state.isWon = false;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(useHint.fulfilled, (state) => {
+        state.coins = coinService.decrementCoins(HINT_COST);
+      })
+      .addCase(useHint.rejected, (_state, action) => {
+        alert(action.payload);
+      });
+  },
 });
 
-export const { generateWord, chooseLetter, restartGame } = hangmanSlice.actions;
-
-export default hangmanSlice.reducer;
+export { actions, name, reducer };

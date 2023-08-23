@@ -1,4 +1,5 @@
 enum StorageKey {
+  COINS = 'coins',
   LEVEL_NUMBER = 'levelNumber',
 }
 

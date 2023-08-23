@@ -4,8 +4,8 @@ interface Props {
   text: string;
 }
 
-const Hint: React.FC<Props> = ({ text }) => {
+const Chip: React.FC<Props> = ({ text }) => {
   return <span className={styles.hint}>{text}</span>;
 };
 
-export { Hint };
+export { Chip };

@@ -1,4 +1,6 @@
 .container {
+  --padding: 2rem;
+
   position: relative;
 
   display: flex;
@@ -8,14 +10,28 @@
 
   gap: 2rem;
 
-  padding: 2rem;
+  padding: var(--padding);
   min-height: 100vh;
 
-  .menu {
+  .menu,
+  .coins,
+  .hint {
     position: absolute;
+  }
 
-    top: 2rem;
-    right: 2rem;
+  .menu {
+    top: var(--padding);
+    right: var(--padding);
+  }
+
+  .coins {
+    top: var(--padding);
+    left: var(--padding);
+  }
+
+  .hint {
+    bottom: var(--padding);
+    right: var(--padding);
   }
 
   .hangman {
