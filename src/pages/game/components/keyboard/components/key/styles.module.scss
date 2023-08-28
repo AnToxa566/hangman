@@ -1,5 +1,5 @@
 .key {
-  --size: 4.5rem;
+  --size: 4rem;
 
   cursor: pointer;
 
@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
 
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
 
   border: none;
@@ -19,6 +19,20 @@
 
   &:hover {
     background-color: var(--dark-gray);
+  }
+
+  @media (max-width: 1200px) {
+    --size: 3.5rem;
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 576px) {
+    --size: 3rem;
+  }
+
+  @media (max-width: 425px) {
+    --size: 2.5rem;
+    font-size: 1rem;
   }
 }
 
