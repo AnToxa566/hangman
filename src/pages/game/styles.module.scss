@@ -13,15 +13,9 @@
   padding: var(--padding);
   min-height: 100vh;
 
-  .menu,
   .coins,
-  .hint {
+  .icons {
     position: absolute;
-  }
-
-  .menu {
-    top: var(--padding);
-    right: var(--padding);
   }
 
   .coins {
@@ -29,13 +23,49 @@
     left: var(--padding);
   }
 
-  .hint {
-    bottom: var(--padding);
-    right: var(--padding);
+  .icons {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 100vh;
+    padding: var(--padding);
+
+    top: 0;
+    right: 0;
+
+    z-index: 0;
   }
 
   .hangman {
     height: 30vh;
     width: auto;
+  }
+
+  .keyboard {
+    z-index: 10;
+  }
+
+  @media (max-width: 1200px) {
+    --padding: 1.5rem;
+
+    .icons {
+      justify-content: flex-start;
+      flex-direction: row-reverse;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    --padding: 1rem;
+  }
+
+  @media (max-width: 576px) {
+    .icons {
+      flex-direction: column;
+      align-items: center;
+    }
   }
 }

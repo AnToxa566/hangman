@@ -81,13 +81,15 @@ const Game = () => {
     <div className={styles.container}>
       <Coins className={styles.coins} />
 
-      <IconButton
-        iconTitle={IconTitle.MENU}
-        onClick={() => setIsMenuOpen(true)}
-        className={styles.menu}
-      />
+      <div className={styles.icons}>
+        <IconButton
+          iconTitle={IconTitle.MENU}
+          onClick={() => setIsMenuOpen(true)}
+          className={styles.menu}
+        />
 
-      <HintButton className={styles.hint} />
+        <HintButton className={styles.hint} />
+      </div>
 
       <Level />
 
@@ -97,7 +99,11 @@ const Game = () => {
 
       <WordPattern phrase={word.title} openLetters={usedLetters} />
 
-      <Keyboard usedLetters={usedLetters} onClick={handleKeyClick} />
+      <Keyboard
+        className={styles.keyboard}
+        usedLetters={usedLetters}
+        onClick={handleKeyClick}
+      />
 
       <ResultModal
         word={word.title}

@@ -33,7 +33,8 @@ const ResultModal: React.FC<Props> = ({
 
           {isWon && (
             <span className={styles.coins}>
-              +{COINS_FOR_VICTORY} coins <Icon title={IconTitle.COIN} />
+              +{COINS_FOR_VICTORY} coins{' '}
+              <Icon className={styles.coinsIcon} title={IconTitle.COIN} />
             </span>
           )}
         </div>

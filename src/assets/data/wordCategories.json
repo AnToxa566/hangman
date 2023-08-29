@@ -169,7 +169,6 @@
       "funk",
       "disco",
       "soul",
-      "r&b",
       "techno",
       "alternative"
     ]
@@ -185,7 +184,6 @@
       "the matrix",
       "harry potter",
       "forrest gump",
-      "the lord of the rings",
       "the lion king",
       "spiderman",
       "black panther",
@@ -195,7 +193,6 @@
       "toy story",
       "the godfather",
       "jaws",
-      "pirates of the caribbean",
       "shrek"
     ]
   },
@@ -358,14 +355,13 @@
       "Elon Musk",
       "Malala Yousafzai",
       "Mahatma Gandhi",
-      "Martin Luther King Jr.",
+      "Martin Luther King",
       "Mother Teresa",
       "Winston Churchill",
       "Amelia Earhart",
       "Marie Curie",
       "Pablo Picasso",
       "Michael Jackson",
-      "Queen Elizabeth II",
       "Napoleon Bonaparte",
       "Vincent van Gogh"
     ]
@@ -380,11 +376,9 @@
       "Machine Learning",
       "Cybersecurity",
       "Internet of Things",
-      "3D Printing",
       "Biotechnology",
       "Quantum Computing",
       "Cryptocurrency",
-      "Self-driving Cars",
       "Smartphone",
       "Robotics",
       "Drones",
