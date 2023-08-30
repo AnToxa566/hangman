@@ -12,11 +12,28 @@
     text-transform: uppercase;
   }
 
+  .checkbox {
+    position: absolute;
+
+    top: 2rem;
+    right: 2rem;
+
+    z-index: 10;
+  }
+
   @media (max-width: 768px) {
     gap: 2rem;
 
     .title {
       font-size: 5rem;
+    }
+
+    .checkbox {
+      top: auto;
+      left: auto;
+      right: auto;
+
+      bottom: 2rem;
     }
   }
 

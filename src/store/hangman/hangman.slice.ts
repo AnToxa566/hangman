@@ -13,6 +13,7 @@ import {
   audioService,
   coinService,
   levelService,
+  darkModeService,
 } from '../../services/services';
 import { useHint } from './hangman.actions';
 
@@ -20,6 +21,7 @@ interface HangmanState {
   word: Word;
   coins: number;
   level: number;
+  isDark: boolean;
   usedLetters: string[];
   mistakesNumber: number;
   isLetterRight: boolean;
@@ -31,6 +33,7 @@ const initialState: HangmanState = {
   word: getRandomWord(),
   coins: coinService.getCoins(),
   level: levelService.getLevel(),
+  isDark: darkModeService.getDarkMode(),
   usedLetters: [],
   mistakesNumber: 0,
   isLetterRight: false,
@@ -79,6 +82,10 @@ const { reducer, actions, name } = createSlice({
       state.isLetterRight = false;
       state.isGameOver = false;
       state.isWon = false;
+    },
+    setDarkMode: (state, action: PayloadAction<boolean>) => {
+      state.isDark = action.payload;
+      darkModeService.setDarkMode(action.payload);
     },
   },
   extraReducers: (builder) => {

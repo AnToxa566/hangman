@@ -1,0 +1,27 @@
+.lightTheme {
+  --background-color: #fff;
+  --text-color: #1d1d1d;
+
+  --primary-color: #e0e0e0;
+  --dark-primary-color: #cacaca;
+
+  --svg-filter: invert(1%) sepia(2%) saturate(553%) hue-rotate(314deg)
+    brightness(99%) contrast(79%);
+}
+
+.darkTheme {
+  --background-color: #1d1d1d;
+  --text-color: #fff;
+
+  --primary-color: #bb86fc;
+  --dark-primary-color: #8f60c9;
+
+  --svg-filter: invert(100%) sepia(98%) saturate(3%) hue-rotate(196deg)
+    brightness(106%) contrast(100%);
+}
+
+.app {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  transition: background-color 600ms;
+}
