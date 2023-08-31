@@ -1,0 +1,51 @@
+.container {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 3rem;
+
+  .title {
+    font-size: 8rem;
+    text-transform: uppercase;
+  }
+
+  .checkbox {
+    position: absolute;
+
+    top: 2rem;
+    right: 2rem;
+
+    z-index: 10;
+  }
+
+  @media (max-width: 768px) {
+    gap: 2rem;
+
+    .title {
+      font-size: 5rem;
+    }
+
+    .checkbox {
+      top: auto;
+      left: auto;
+      right: auto;
+
+      bottom: 2rem;
+    }
+  }
+
+  @media (max-width: 425px) {
+    .title {
+      font-size: 4rem;
+    }
+  }
+
+  @media (max-width: 320px) {
+    .title {
+      font-size: 3.5rem;
+    }
+  }
+}

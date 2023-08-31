@@ -1,0 +1,47 @@
+.key {
+  --size: 4rem;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.5rem;
+  color: var(--text-color);
+  text-transform: uppercase;
+
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--primary-color);
+
+  width: var(--size);
+  height: var(--size);
+
+  &:hover {
+    background-color: var(--dark-primary-color);
+  }
+
+  @media (max-width: 1200px) {
+    --size: 3.5rem;
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 576px) {
+    --size: 3rem;
+  }
+
+  @media (max-width: 425px) {
+    --size: 2.5rem;
+    font-size: 1rem;
+  }
+}
+
+.disable {
+  background-color: transparent;
+  color: var(--primary-color);
+
+  &:hover {
+    background-color: transparent;
+  }
+}

@@ -1,0 +1,61 @@
+.modal {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+
+  .green {
+    color: var(--green);
+  }
+  .red {
+    color: var(--red);
+  }
+
+  .contet {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+
+    font-size: 1.5rem;
+    text-align: center;
+
+    .word {
+      .uppercase {
+        text-transform: uppercase;
+      }
+    }
+
+    .coins {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 2.25rem;
+
+      .coinsIcon {
+        width: var(--coin-size);
+        height: var(--coin-size);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contet {
+      .word {
+        font-size: 1.25rem;
+      }
+
+      .coins {
+        font-size: 2rem;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .contet {
+      .coins {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

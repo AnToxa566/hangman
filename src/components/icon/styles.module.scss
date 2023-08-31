@@ -1,0 +1,16 @@
+.icon {
+  --size: 4rem;
+
+  width: var(--size);
+  height: var(--size);
+
+  filter: var(--svg-filter);
+
+  @media (max-width: 768px) {
+    --size: 3rem;
+  }
+
+  @media (max-width: 576px) {
+    --size: 2.5rem;
+  }
+}

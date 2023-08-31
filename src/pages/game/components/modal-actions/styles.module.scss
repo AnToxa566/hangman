@@ -1,0 +1,22 @@
+.actions {
+  display: flex;
+  gap: 2rem;
+
+  a,
+  button {
+    cursor: pointer;
+
+    border: none;
+    background: transparent;
+
+    padding: 0;
+
+    :hover {
+      transform: scale(1.1, 1.1);
+    }
+  }
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
+}
