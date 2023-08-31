@@ -1,4 +1,5 @@
 export { Button } from './button/button';
+export { Checkbox } from './checkbox/checkbox';
 export { Icon } from './icon/icon';
 export { IconButton } from './icon-button/icon-button';
 export { Modal } from './modal/modal';

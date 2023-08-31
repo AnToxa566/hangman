@@ -35,7 +35,7 @@
 
     width: 31.25rem;
     border-radius: 0.625rem;
-    background: var(--white);
+    background: var(--background-color);
 
     z-index: 1000;
 
@@ -52,8 +52,8 @@
       border: none;
       border-radius: 1rem;
 
-      color: var(--white);
-      background-color: var(--black);
+      color: var(--background-color);
+      background-color: var(--text-color);
     }
   }
 }
